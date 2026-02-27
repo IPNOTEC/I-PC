@@ -467,6 +467,588 @@
         }
 
         /* ── EXPENSE ── */
+        /* ── FRESH-BOOK BIRTHDAY FEATURE ── */
+        .birthday-bar {
+            background:linear-gradient(90deg,rgba(255,105,0,.08),rgba(255,105,0,.04));
+            border:1px solid rgba(255,105,0,.2);
+            border-radius:4px; padding:12px;
+            margin-bottom:12px;
+            text-align:center;
+            font-family:'Orbitron',sans-serif;
+            font-size:.75rem;
+            letter-spacing:1px;
+        }
+        .birthday-bar.active { background:linear-gradient(90deg,rgba(255,105,0,.15),rgba(255,105,0,.08)); border-color:rgba(255,105,0,.4); color:var(--orange); }
+        .birthday-bar.ready { background:linear-gradient(90deg,rgba(57,211,83,.12),rgba(57,211,83,.06)); border-color:rgba(57,211,83,.3); color:var(--green); }
+        
+        .freshbook-btn {
+            background:rgba(255,105,0,.08);
+            border:1.5px solid rgba(255,105,0,.3);
+            color:var(--ac);
+            padding:10px 14px;
+            font-family:'Orbitron',sans-serif;
+            font-size:.7rem;
+            border-radius:4px;
+            cursor:pointer;
+            transition:all .3s;
+            width:100%;
+            margin:6px 0;
+            font-weight:600;
+            letter-spacing:1px;
+        }
+        .freshbook-btn:hover { background:rgba(255,105,0,.15); border-color:var(--ac); box-shadow:0 0 15px rgba(255,105,0,.2); }
+        .freshbook-btn:disabled { opacity:.4; cursor:not-allowed; }
+
+        .freshbook-modal {
+            position:fixed;
+            top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,.85);
+            display:none;
+            align-items:center;
+            justify-content:center;
+            z-index:9999;
+            backdrop-filter:blur(3px);
+        }
+        .freshbook-modal.show { display:flex; }
+        .fb-container {
+            background:#0c0c0c;
+            border:2px solid var(--ac);
+            border-radius:8px;
+            width:90%;
+            max-width:900px;
+            max-height:85vh;
+            overflow:hidden;
+            display:flex;
+            flex-direction:column;
+            box-shadow:0 0 40px rgba(255,105,0,.2);
+        }
+        .fb-header {
+            background:rgba(255,105,0,.08);
+            border-bottom:1px solid rgba(255,105,0,.2);
+            padding:16px 20px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+        .fb-header h2 {
+            font-family:'Orbitron',sans-serif;
+            font-size:1.4rem;
+            letter-spacing:2px;
+            color:var(--ac);
+        }
+        .fb-close {
+            background:none;
+            border:none;
+            color:rgba(255,255,255,.5);
+            font-size:1.8rem;
+            cursor:pointer;
+            transition:color .2s;
+        }
+        .fb-close:hover { color:var(--ac); }
+
+        .fb-content {
+            flex:1;
+            overflow-y:auto;
+            padding:20px;
+        }
+        .fb-matches {
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+            gap:12px;
+            margin-bottom:16px;
+        }
+        .fb-match-card {
+            background:rgba(255,105,0,.05);
+            border:1px solid rgba(255,105,0,.15);
+            border-radius:6px;
+            padding:14px;
+            position:relative;
+            overflow:hidden;
+        }
+        .fb-match-card::before {
+            content:'';
+            position:absolute;
+            top:0; left:0;
+            width:100%; height:2px;
+            background:var(--ac);
+            opacity:.4;
+        }
+        .fb-contact-name {
+            font-family:'Orbitron',sans-serif;
+            font-size:.95rem;
+            color:var(--ac);
+            font-weight:600;
+            margin-bottom:6px;
+        }
+        .fb-emotion-tag {
+            display:inline-block;
+            padding:4px 8px;
+            background:rgba(255,105,0,.15);
+            border-radius:3px;
+            font-size:.7rem;
+            color:rgba(255,255,255,.8);
+            margin:3px 3px 3px 0;
+        }
+        .fb-match-badge {
+            display:inline-block;
+            background:rgba(57,211,83,.2);
+            color:var(--green);
+            padding:4px 10px;
+            border-radius:3px;
+            font-size:.75rem;
+            font-weight:700;
+            margin-top:8px;
+            border:1px solid rgba(57,211,83,.3);
+        }
+        .fb-footer {
+            background:rgba(0,0,0,.3);
+            border-top:1px solid rgba(255,105,0,.1);
+            padding:16px 20px;
+            display:flex;
+            gap:10px;
+            justify-content:flex-end;
+        }
+        .fb-action-btn {
+            background:rgba(255,105,0,.1);
+            border:1px solid rgba(255,105,0,.25);
+            color:rgba(255,255,255,.8);
+            padding:8px 14px;
+            border-radius:4px;
+            cursor:pointer;
+            font-family:'Orbitron',sans-serif;
+            font-size:.75rem;
+            transition:all .2s;
+        }
+        .fb-action-btn:hover { background:rgba(255,105,0,.15); border-color:var(--ac); color:var(--ac); }
+        .fb-action-btn.primary { background:rgba(255,105,0,.15); border-color:var(--ac); color:var(--ac); }
+        .fb-action-btn.primary:hover { background:rgba(255,105,0,.25); box-shadow:0 0 15px rgba(255,105,0,.15); }
+
+        /* ── MY BIRTHDAY MEGA BUTTON ── */
+        .bday-mega-btn {
+            display:flex; align-items:center; justify-content:center; gap:10px;
+            width:100%; padding:14px 20px; margin-bottom:6px;
+            background:linear-gradient(135deg,rgba(255,105,0,.18),rgba(255,50,50,.1));
+            border:2px solid var(--ac); border-radius:6px;
+            color:var(--ac); font-family:'Orbitron',sans-serif;
+            font-size:.72rem; letter-spacing:2px; cursor:pointer;
+            position:relative; overflow:hidden;
+            animation:bdayPulse 2.5s infinite alternate;
+            box-shadow:0 0 20px rgba(255,105,0,.25),inset 0 0 20px rgba(255,105,0,.05);
+            transition:all .3s;
+        }
+        @keyframes bdayPulse {
+            0%  { box-shadow:0 0 12px rgba(255,105,0,.2),inset 0 0 10px rgba(255,105,0,.03); }
+            100%{ box-shadow:0 0 35px rgba(255,105,0,.6),0 0 70px rgba(255,105,0,.18),inset 0 0 20px rgba(255,105,0,.08); border-color:#ff8533; }
+        }
+        .bday-mega-btn:hover { background:linear-gradient(135deg,rgba(255,105,0,.28),rgba(255,50,50,.18)); transform:translateY(-2px); }
+        .bday-mega-btn .bd-icon { font-size:1.3rem; }
+        .bday-mega-btn.sealed {
+            background:rgba(155,0,255,.08); border-color:rgba(155,0,255,.5);
+            color:var(--violet); animation:sealedPulse 3s infinite alternate; cursor:default;
+        }
+        @keyframes sealedPulse {
+            0%  { box-shadow:0 0 10px rgba(155,0,255,.15); }
+            100%{ box-shadow:0 0 28px rgba(155,0,255,.4),0 0 50px rgba(155,0,255,.1); }
+        }
+        .bday-mega-btn.ready {
+            background:linear-gradient(135deg,rgba(57,211,83,.14),rgba(0,168,232,.08));
+            border-color:var(--green); color:var(--green);
+            animation:readyPulse 2s infinite alternate;
+        }
+        @keyframes readyPulse {
+            0%  { box-shadow:0 0 15px rgba(57,211,83,.2); }
+            100%{ box-shadow:0 0 38px rgba(57,211,83,.6),0 0 65px rgba(57,211,83,.12); }
+        }
+        .bday-mega-btn.locked {
+            background:rgba(155,155,155,.06); border-color:rgba(155,155,155,.25);
+            color:rgba(155,155,155,.6); animation:none; cursor:pointer;
+            box-shadow:none;
+        }
+        .bday-demo-reset {
+            text-align:center; font-size:.55rem; color:rgba(255,255,255,.18);
+            cursor:pointer; margin-bottom:10px;
+            font-family:'Orbitron',sans-serif; letter-spacing:1px;
+            transition:color .2s;
+        }
+        .bday-demo-reset:hover { color:rgba(255,105,0,.5); }
+
+        /* ── YEAR-LOCK MODAL ── */
+        .yearlock-modal {
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,.92); display:none;
+            align-items:center; justify-content:center;
+            z-index:9999; backdrop-filter:blur(7px);
+        }
+        .yearlock-modal.show { display:flex; }
+        .yl-container {
+            background:#080808; border:2px solid var(--violet);
+            border-radius:10px; padding:40px;
+            max-width:560px; width:90%; text-align:center;
+            box-shadow:0 0 60px rgba(155,0,255,.25);
+        }
+        .yl-icon { font-size:3rem; margin-bottom:16px; }
+        .yl-title {
+            font-family:'Orbitron',sans-serif; font-size:1.2rem;
+            color:var(--violet); letter-spacing:2px; margin-bottom:14px;
+        }
+        .yl-body {
+            font-size:.88rem; color:rgba(255,255,255,.55);
+            line-height:1.75; margin-bottom:20px;
+        }
+        .yl-countdown {
+            font-family:'Orbitron',sans-serif; font-size:1.3rem;
+            color:var(--orange); margin:16px 0; padding:14px;
+            border:1px solid rgba(255,105,0,.2); border-radius:6px;
+            background:rgba(255,105,0,.05);
+        }
+        .yl-btn {
+            background:rgba(155,0,255,.12); border:1px solid rgba(155,0,255,.35);
+            color:var(--violet); padding:10px 26px; border-radius:4px;
+            font-family:'Orbitron',sans-serif; font-size:.68rem;
+            cursor:pointer; transition:all .2s; margin:4px;
+        }
+        .yl-btn:hover { background:rgba(155,0,255,.22); }
+        .yl-btn.view { background:rgba(57,211,83,.1); border-color:rgba(57,211,83,.3); color:var(--green); }
+        .yl-btn.view:hover { background:rgba(57,211,83,.2); }
+
+        /* ── SEALED COUNTDOWN MODAL ── */
+        .sealed-modal {
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,.9); display:none;
+            align-items:center; justify-content:center;
+            z-index:9999; backdrop-filter:blur(7px);
+        }
+        .sealed-modal.show { display:flex; }
+        .sl-container {
+            background:#080808; border:2px solid var(--violet);
+            border-radius:10px; padding:40px; max-width:520px;
+            width:90%; text-align:center;
+            box-shadow:0 0 50px rgba(155,0,255,.2);
+        }
+        .sl-title {
+            font-family:'Orbitron',sans-serif; font-size:1.1rem;
+            color:var(--violet); letter-spacing:2px; margin:16px 0 10px;
+        }
+        .sl-timer {
+            font-family:'Orbitron',sans-serif; font-size:2.2rem;
+            color:var(--ac); margin:20px 0; letter-spacing:4px;
+        }
+        .sl-sub { font-size:.8rem; color:rgba(255,255,255,.4); line-height:1.7; }
+
+        /* ── BIRTHDAY SETUP MODAL ── */
+        .bday-setup-modal {
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,.88); display:none;
+            align-items:center; justify-content:center;
+            z-index:9995; backdrop-filter:blur(5px);
+        }
+        .bday-setup-modal.show { display:flex; }
+        .bs-container {
+            background:#0a0a0a; border:2px solid var(--ac);
+            border-radius:8px; padding:32px; max-width:480px;
+            width:90%; text-align:center;
+            box-shadow:0 0 40px rgba(255,105,0,.15);
+        }
+        .bs-title {
+            font-family:'Orbitron',sans-serif; font-size:1.1rem;
+            color:var(--ac); letter-spacing:2px; margin-bottom:8px;
+        }
+        .bs-sub { font-size:.82rem; color:rgba(255,255,255,.45); margin-bottom:22px; line-height:1.6; }
+
+        /* ── FRESH-BOOK BLUR ── */
+        .fb-name-blur {
+            filter:blur(7px); transition:filter .35s;
+            cursor:pointer; user-select:none;
+            display:inline-block;
+        }
+        .fb-name-blur:hover,.fb-name-blur.revealed { filter:blur(0); }
+        .fb-blur-hint {
+            font-size:.65rem; color:rgba(255,255,255,.3);
+            margin-top:6px; letter-spacing:1px;
+        }
+        .fb-priority-badge {
+            display:inline-block; padding:3px 10px;
+            border-radius:3px; font-size:.7rem; font-weight:700;
+            margin:4px 4px 4px 0;
+        }
+        .fb-p1 { background:rgba(255,105,0,.2); color:var(--orange); border:1px solid rgba(255,105,0,.3); }
+        .fb-p2 { background:rgba(155,155,155,.15); color:var(--nardo); border:1px solid rgba(155,155,155,.25); }
+        .fb-p3 { background:rgba(0,168,232,.1); color:var(--blue); border:1px solid rgba(0,168,232,.2); }
+        .fb-match-source {
+            font-size:.65rem; color:rgba(255,255,255,.3);
+            margin-top:4px; font-style:italic;
+        }
+
+        .fb-stats {
+            background:rgba(255,105,0,.04);
+            border:1px solid rgba(255,105,0,.1);
+            border-radius:6px;
+            padding:14px;
+            margin-bottom:16px;
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:12px;
+        }
+        .fb-stat-item {
+            text-align:center;
+        }
+        .fb-stat-num {
+            font-family:'Orbitron',sans-serif;
+            font-size:1.8rem;
+            color:var(--ac);
+            font-weight:700;
+            display:block;
+        }
+        .fb-stat-label {
+            font-size:.7rem;
+            color:rgba(255,255,255,.5);
+            margin-top:4px;
+            letter-spacing:1px;
+        }
+
+        .birthday-choice-modal {
+            position:fixed;
+            top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,.85);
+            display:none;
+            align-items:center;
+            justify-content:center;
+            z-index:9998;
+            backdrop-filter:blur(3px);
+        }
+        .birthday-choice-modal.show { display:flex; }
+        .bc-container {
+            background:#0c0c0c;
+            border:2px solid var(--ac);
+            border-radius:8px;
+            width:90%;
+            max-width:700px;
+            padding:30px;
+            text-align:center;
+        }
+        .bc-title {
+            font-family:'Orbitron',sans-serif;
+            font-size:1.6rem;
+            letter-spacing:2px;
+            color:var(--ac);
+            margin-bottom:16px;
+        }
+        .bc-subtitle {
+            font-size:.95rem;
+            color:rgba(255,255,255,.7);
+            margin-bottom:24px;
+            line-height:1.6;
+        }
+        .bc-options {
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+        }
+        .bc-option-btn {
+            background:rgba(255,105,0,.08);
+            border:2px solid rgba(255,105,0,.2);
+            color:rgba(255,255,255,.8);
+            padding:16px;
+            border-radius:6px;
+            cursor:pointer;
+            font-family:'Orbitron',sans-serif;
+            font-size:.85rem;
+            transition:all .3s;
+            text-align:left;
+        }
+        .bc-option-btn:hover {
+            background:rgba(255,105,0,.15);
+            border-color:var(--ac);
+            color:var(--ac);
+            transform:translateX(5px);
+        }
+        .bc-option-title { font-weight:700; display:block; margin-bottom:4px; }
+        .bc-option-desc { font-size:.75rem; opacity:.7; }
+
+        .contact-assign-modal {
+            position:fixed;
+            top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,.85);
+            display:none;
+            z-index:9997;
+            overflow:auto;
+        }
+        .contact-assign-modal.show { display:block; }
+        
+        .matching-process-modal {
+            position:fixed;
+            top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,.85);
+            display:none;
+            z-index:9996;
+            overflow:auto;
+            backdrop-filter:blur(3px);
+        }
+        .matching-process-modal.show { display:block; }
+        .mp-container {
+            background:#0c0c0c;
+            border:2px solid var(--ac);
+            border-radius:8px;
+            width:90%;
+            max-width:800px;
+            margin:40px auto;
+            padding:20px;
+        }
+        .mp-header {
+            border-bottom:1px solid rgba(255,105,0,.2);
+            padding-bottom:15px;
+            margin-bottom:20px;
+        }
+        .mp-header h2 {
+            font-family:'Orbitron',sans-serif;
+            font-size:1.3rem;
+            color:var(--ac);
+            margin-bottom:8px;
+        }
+        .mp-counter {
+            text-align:center;
+            padding:20px;
+            background:rgba(255,105,0,.06);
+            border:1px solid rgba(255,105,0,.15);
+            border-radius:6px;
+            margin-bottom:20px;
+            min-height:80px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+        .mp-grid {
+            background:rgba(255,105,0,.02);
+            border:1px solid rgba(255,105,0,.1);
+            border-radius:6px;
+            padding:15px;
+            max-height:400px;
+            overflow-y:auto;
+            margin-bottom:20px;
+        }
+        .mp-actions {
+            display:flex;
+            gap:10px;
+            justify-content:flex-end;
+        }
+        .mp-btn {
+            background:rgba(255,105,0,.1);
+            border:1px solid rgba(255,105,0,.25);
+            color:rgba(255,255,255,.8);
+            padding:10px 16px;
+            border-radius:4px;
+            cursor:pointer;
+            font-family:'Orbitron',sans-serif;
+            font-size:.8rem;
+            transition:all .2s;
+        }
+        .mp-btn:hover { background:rgba(255,105,0,.15); border-color:var(--ac); color:var(--ac); }
+        .mp-btn.primary { background:rgba(255,105,0,.15); border-color:var(--ac); color:var(--ac); font-weight:600; }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .ca-container {
+            background:#0c0c0c;
+            border:2px solid var(--ac);
+            border-radius:8px;
+            width:90%;
+            max-width:800px;
+            margin:40px auto;
+            padding:20px;
+        }
+        .ca-header {
+            border-bottom:1px solid rgba(255,105,0,.2);
+            padding-bottom:12px;
+            margin-bottom:20px;
+        }
+        .ca-header h2 {
+            font-family:'Orbitron',sans-serif;
+            font-size:1.3rem;
+            color:var(--ac);
+            margin-bottom:6px;
+        }
+        .ca-progress {
+            width:100%;
+            height:6px;
+            background:rgba(255,105,0,.1);
+            border-radius:3px;
+            overflow:hidden;
+            margin-top:12px;
+        }
+        .ca-progress-bar {
+            height:100%;
+            background:var(--ac);
+            width:0%;
+            transition:width .3s;
+        }
+        .contact-assign-form {
+            background:rgba(255,105,0,.04);
+            border:1px solid rgba(255,105,0,.1);
+            border-radius:6px;
+            padding:20px;
+            margin-bottom:20px;
+        }
+        .ca-name {
+            font-family:'Orbitron',sans-serif;
+            font-size:1.1rem;
+            color:var(--ac);
+            margin-bottom:16px;
+        }
+        .ca-label {
+            font-size:.8rem;
+            color:rgba(255,255,255,.6);
+            margin:12px 0 6px;
+            letter-spacing:1px;
+            text-transform:uppercase;
+            font-weight:600;
+        }
+        .ca-grid {
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:6px;
+            margin-bottom:12px;
+        }
+        .ca-option {
+            background:rgba(255,255,255,.03);
+            border:1px solid rgba(255,255,255,.08);
+            color:rgba(255,255,255,.6);
+            padding:10px;
+            border-radius:4px;
+            cursor:pointer;
+            font-size:.8rem;
+            text-align:center;
+            transition:all .2s;
+        }
+        .ca-option:hover { border-color:rgba(255,105,0,.3); }
+        .ca-option.sel { background:rgba(255,105,0,.15); border-color:var(--ac); color:var(--ac); font-weight:700; }
+
+        .ca-actions {
+            display:flex;
+            gap:10px;
+            justify-content:flex-end;
+        }
+        .ca-btn {
+            background:rgba(255,105,0,.1);
+            border:1px solid rgba(255,105,0,.25);
+            color:rgba(255,255,255,.8);
+            padding:10px 16px;
+            border-radius:4px;
+            cursor:pointer;
+            font-family:'Orbitron',sans-serif;
+            font-size:.8rem;
+            transition:all .2s;
+        }
+        .ca-btn:hover { background:rgba(255,105,0,.15); border-color:var(--ac); color:var(--ac); }
+        .ca-btn.primary { background:rgba(255,105,0,.15); border-color:var(--ac); color:var(--ac); font-weight:600; }
+
         .exp-layout {
             display:grid; grid-template-columns:285px 1fr;
             gap:1.2rem; height:calc(100% - 58px);
@@ -796,6 +1378,11 @@ VIBGYOR PROFILES:
                     </div>
                     <div class="app-body">
                         <div class="ab-stats" id="abStats"></div>
+                        <button class="bday-mega-btn" id="bdayMegaBtn" onclick="handleBirthdayClick()">
+                            <span class="bd-icon">🎂</span>
+                            <span id="bdayBtnText">MY BIRTHDAY — ACTIVATE GIFT</span>
+                        </button>
+                        <div class="bday-demo-reset" onclick="resetBirthdayDemo()" title="Clear demo state">⟳ DEMO RESET</div>
                         <div class="ab-layout">
                             <div class="ab-form">
                                 <div class="sec-title">ADD CONTACT</div>
@@ -1120,6 +1707,568 @@ VIBGYOR PROFILES:
     <div class="tab" onclick="openApp('ipnotecEvents')">Events</div>
 </div>
 
+<!-- ════════ BIRTHDAY SETUP MODAL ════════ -->
+<div class="bday-setup-modal" id="bdaySetupModal">
+    <div class="bs-container">
+        <div style="font-size:2.5rem;margin-bottom:12px;">🎂</div>
+        <div class="bs-title">BIRTHDAY ACTIVATION</div>
+        <div class="bs-sub">
+            Enter your date of birth to activate the IPNOTEC GIFT.<br>
+            Your 108 Priority contacts will be locked for one full year.
+        </div>
+        <div class="fg" style="margin-bottom:16px;text-align:left;">
+            <label>YOUR DATE OF BIRTH</label>
+            <input type="date" id="bdayDobInput" />
+        </div>
+        <div style="display:flex;gap:10px;justify-content:center;">
+            <button class="btn-s" onclick="closeBdaySetup()">CANCEL</button>
+            <button class="btn-p" onclick="confirmBdayActivate()">🎁 ACTIVATE BIRTHDAY GIFT</button>
+        </div>
+        <div style="font-size:.65rem;color:rgba(255,255,255,.2);margin-top:16px;line-height:1.6;">
+            This is a one-time annual activation.<br>
+            Your Life Priority Matches will be revealed 24 hours later.
+        </div>
+    </div>
+</div>
+
+<!-- ════════ YEAR-LOCK MODAL ════════ -->
+<div class="yearlock-modal" id="yearlockModal">
+    <div class="yl-container">
+        <div class="yl-icon">🔒</div>
+        <div class="yl-title">YEAR-LOCK ACTIVE</div>
+        <div class="yl-body">
+            Your 108 Priority Contacts are sealed from<br>
+            <strong style="color:var(--ac)" id="ylFromDate">—</strong> to <strong style="color:var(--ac)" id="ylToDate">—</strong>.<br><br>
+            The Life Priority Match is a sacred annual ritual.<br>
+            You cannot change or re-activate until your next birthday.
+        </div>
+        <div class="yl-countdown" id="ylCountdown">— days remaining</div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <button class="yl-btn view" onclick="closeyearlockAndView()">👁 VIEW MY MATCHES</button>
+            <button class="yl-btn" onclick="document.getElementById('yearlockModal').classList.remove('show')">CLOSE</button>
+        </div>
+    </div>
+</div>
+
+<!-- ════════ SEALED (24H WAIT) MODAL ════════ -->
+<div class="sealed-modal" id="sealedModal">
+    <div class="sl-container">
+        <div style="font-size:2.8rem;">🔮</div>
+        <div class="sl-title">LIFE PRIORITY MATCH — SEALED</div>
+        <div class="sl-timer" id="sealedTimerDisplay">00:00:00</div>
+        <div class="sl-sub">
+            Your 108 contacts have received your priority signal.<br>
+            The universe is computing mutual matches.<br><br>
+            <strong style="color:var(--ac);">Return in 24 hours</strong> to see who has you<br>
+            at the same priority in their own book.
+        </div>
+        <div style="margin-top:24px;">
+            <button class="yl-btn" onclick="document.getElementById('sealedModal').classList.remove('show')">UNDERSTOOD</button>
+        </div>
+    </div>
+</div>
+
+<!-- ════════ FRESH-BOOK MODALS ════════ -->
+<div class="freshbook-modal" id="freshbookModal">
+    <div class="fb-container">
+        <div class="fb-header">
+            <h2>🎁 IPNOTEC FRESH-BOOK</h2>
+            <button class="fb-close" onclick="closeFreshbook()">✕</button>
+        </div>
+        <div class="fb-content">
+            <div class="fb-stats">
+                <div class="fb-stat-item">
+                    <span class="fb-stat-num" id="fbTotalContacts">108</span>
+                    <span class="fb-stat-label">TOTAL CONTACTS</span>
+                </div>
+                <div class="fb-stat-item">
+                    <span class="fb-stat-num" id="fbMatchCount">0</span>
+                    <span class="fb-stat-label">MUTUAL MATCHES</span>
+                </div>
+                <div class="fb-stat-item">
+                    <span class="fb-stat-num" id="fbMatchPercent">0%</span>
+                    <span class="fb-stat-label">MATCH RATE</span>
+                </div>
+            </div>
+            <div style="font-size:.72rem;color:rgba(255,255,255,.3);margin-bottom:14px;text-align:center;letter-spacing:1px;">
+                🔮 HOVER/TAP A NAME TO REVEAL · LIFE PRIORITY MATCH IS PRIVATE TO YOU
+            </div>
+            <div class="fb-matches" id="fbMatchesGrid"></div>
+            <div id="fbNoMatches" style="text-align:center;padding:40px;color:rgba(255,255,255,.4);">
+                <p>No mutual matches found yet.</p>
+                <p style="font-size:.8rem;margin-top:8px;">Check back after birthday activation.</p>
+            </div>
+        </div>
+        <div class="fb-footer">
+            <button class="fb-action-btn" onclick="exportFreshbook('csv')">📥 EXPORT CSV</button>
+            <button class="fb-action-btn" onclick="exportFreshbook('json')">📥 EXPORT JSON</button>
+            <button class="fb-action-btn primary" onclick="closeFreshbook()">CLOSE</button>
+        </div>
+    </div>
+</div>
+
+<div class="birthday-choice-modal" id="birthdayChoiceModal">
+    <div class="bc-container">
+        <div class="bc-title">🎂 BIRTHDAY ACTIVATED</div>
+        <div class="bc-subtitle">
+            It's your birthday! You can either review your FRESH-BOOK matches from last year,<br>
+            or create a fresh new set of 108 contacts for this year.
+        </div>
+        <div class="bc-options">
+            <button class="bc-option-btn" onclick="proceedWithOldFreshbook()">
+                <span class="bc-option-title">📖 Review Last Year's FRESH-BOOK</span>
+                <span class="bc-option-desc">View previous matches before deciding</span>
+            </button>
+            <button class="bc-option-btn" onclick="proceedWithFreshFill()">
+                <span class="bc-option-title">✨ Create Fresh 108 Contacts</span>
+                <span class="bc-option-desc">Start new priority assignments</span>
+            </button>
+            <button class="bc-option-btn" onclick="closeBirthdayChoice()" style="background:rgba(255,105,0,.04);border-color:rgba(255,105,0,.1);color:rgba(255,255,255,.5);">
+                <span class="bc-option-title">Cancel</span>
+                <span class="bc-option-desc">Decide later</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="contact-assign-modal" id="contactAssignModal">
+    <div class="ca-container">
+        <div class="ca-header">
+            <h2>📝 ASSIGN PRIORITY EMOTIONS</h2>
+            <p style="font-size:.8rem;color:rgba(255,255,255,.5);margin-top:6px;">Select emotion & category for each contact (Sample mode: First 5 manual, rest auto)</p>
+            <div class="ca-progress">
+                <div class="ca-progress-bar" id="caProgressBar"></div>
+            </div>
+        </div>
+        <div class="contact-assign-form" id="contactAssignForm"></div>
+        <div class="ca-actions">
+            <button class="ca-btn" onclick="cancelContactAssign()">CANCEL</button>
+            <button class="ca-btn primary" onclick="completeContactAssign()" id="completeAssignBtn">NEXT CONTACT</button>
+        </div>
+    </div>
+</div>
+
+<div class="matching-process-modal" id="matchingProcessModal">
+    <div class="mp-container">
+        <div class="mp-header">
+            <h2>⚡ CALCULATING MUTUAL MATCHES</h2>
+            <p style="font-size:.85rem;color:rgba(255,255,255,.5);margin-top:8px;">
+                Comparing your assignments with simulated global database...<br>
+                Matching by: NAME + EMOTION + CATEGORY
+            </p>
+        </div>
+        
+        <div class="mp-counter" id="matchingCounter">
+            <div style="text-align:center;">
+                <div style="font-size:1.2rem;color:var(--ac);font-weight:700;">Starting process...</div>
+            </div>
+        </div>
+        
+        <div class="mp-grid" id="matchingGrid">
+            <div style="text-align:center;color:rgba(255,255,255,.4);padding:20px;">
+                Processing contacts...
+            </div>
+        </div>
+        
+        <div class="mp-actions">
+            <button class="mp-btn primary" id="matchingCompleteBtn" onclick="proceedToFreshbook()" style="display:none;">
+                VIEW FRESH-BOOK MATCHES →
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  IPNOTEC FRESH-BOOK SYSTEM v3 — BIRTHDAY GIFT
+//  Matching Algorithm: PRIORITY NUMBER (P1/P2/P3)
+//  Lock Period: Birthday to Birthday (1 year)
+//  Reveal: 24 hours after activation
+//  Privacy: Names blurred until hover/tap
+// ══════════════════════════════════════════
+
+const TOTAL_CONTACTS = 108;
+const SEAL_HOURS = 24; // hours before reveal unlocks
+
+// ── Simulated name pool for filling up to 108 ──
+const SIM_FIRST = ['Raj','Priya','Amit','Neha','Vikram','Sonia','Rohan','Anjali','Arjun','Divya',
+    'Arun','Kavya','Karan','Maya','Nikhil','Pooja','Sandeep','Shreya','Taran','Usha',
+    'Dev','Isha','Ravi','Meera','Suresh','Deepa','Anand','Lakshmi','Mohan','Geeta'];
+const SIM_LAST  = ['Kumar','Singh','Patel','Sharma','Verma','Gupta','Nair','Desai','Reddy','Rao',
+    'Pandey','Mishra','Jain','Saxena','Bhat','Bansal','Chopra','Dutta','Ghosh','Iyer',
+    'Shah','Pillai','Menon','Kapoor','Malhotra','Trivedi','Shukla','Bajaj','Mehta','Dubey'];
+const SIM_CATS = ['family','friends','professional','mentor','other'];
+
+// ── localStorage keys ──
+const LS = {
+    ACTIVATED_TS : 'ipn_bday_activated_ts',   // ISO timestamp when activated
+    ACTIVATED_YEAR: 'ipn_bday_activated_year', // "YYYY-MM-DD" of birthday that triggered
+    CONTACTS_108 : 'ipn_bday_108',             // JSON array of 108 contacts with their_pri
+    MATCHES      : 'ipn_bday_matches',         // JSON array of mutual matches
+    USER_DOB     : 'ipn_user_dob'              // YYYY-MM-DD
+};
+
+// ── Generate a seeded pseudo-random number ──
+function seededRand(seed, index){
+    const x = Math.sin(seed * 9301 + index * 49297 + 233) * 100000;
+    return x - Math.floor(x);
+}
+
+// ── Get state ──
+function getBdayState(){
+    const activatedTs = localStorage.getItem(LS.ACTIVATED_TS);
+    const activatedYear = localStorage.getItem(LS.ACTIVATED_YEAR);
+    const userDob = localStorage.getItem(LS.USER_DOB);
+    const now = new Date();
+
+    if(!activatedTs){
+        return { state: 'NEVER_ACTIVATED', userDob };
+    }
+
+    const activatedDate = new Date(activatedTs);
+    const hoursElapsed = (now - activatedDate) / 3600000;
+
+    // Check if this is a NEW birthday year (activated previously, new year now)
+    if(activatedYear && userDob){
+        const dob = new Date(userDob);
+        const nextBirthday = new Date(activatedDate.getFullYear() + 1, dob.getMonth(), dob.getDate());
+        if(now >= nextBirthday){
+            return { state: 'NEW_YEAR', userDob, activatedDate, hoursElapsed };
+        }
+    }
+
+    if(hoursElapsed < SEAL_HOURS){
+        return { state: 'SEALED', userDob, activatedDate, hoursElapsed, secsRemaining: Math.ceil((SEAL_HOURS - hoursElapsed) * 3600) };
+    }
+
+    return { state: 'REVEALED', userDob, activatedDate, hoursElapsed };
+}
+
+// ── Render the birthday button based on state ──
+function renderBdayButton(){
+    const btn = document.getElementById('bdayMegaBtn');
+    const txt = document.getElementById('bdayBtnText');
+    if(!btn) return;
+    const s = getBdayState();
+
+    btn.className = 'bday-mega-btn'; // reset
+    switch(s.state){
+        case 'NEVER_ACTIVATED':
+        case 'NEW_YEAR':
+            btn.innerHTML = `<span class="bd-icon">🎂</span><span id="bdayBtnText">MY BIRTHDAY — ACTIVATE GIFT</span>`;
+            break;
+        case 'SEALED':
+            btn.classList.add('sealed');
+            const h = Math.floor(s.secsRemaining / 3600);
+            const m = Math.floor((s.secsRemaining % 3600) / 60);
+            btn.innerHTML = `<span class="bd-icon">🔮</span><span id="bdayBtnText">SEALED — OPENS IN ${h}h ${m}m</span>`;
+            break;
+        case 'REVEALED':
+            btn.classList.add('ready');
+            btn.innerHTML = `<span class="bd-icon">✨</span><span id="bdayBtnText">LIFE PRIORITY MATCH — VIEW NOW</span>`;
+            break;
+    }
+}
+
+// ── Main click handler ──
+function handleBirthdayClick(){
+    const s = getBdayState();
+    switch(s.state){
+        case 'NEVER_ACTIVATED':
+        case 'NEW_YEAR':
+            openBdaySetup();
+            break;
+        case 'SEALED':
+            showSealedModal(s.secsRemaining);
+            break;
+        case 'REVEALED':
+            viewFreshbook();
+            break;
+    }
+}
+
+// ── Birthday Setup Modal ──
+function openBdaySetup(){
+    // Pre-fill if DOB already stored
+    const saved = localStorage.getItem(LS.USER_DOB);
+    if(saved) document.getElementById('bdayDobInput').value = saved;
+    document.getElementById('bdaySetupModal').classList.add('show');
+}
+
+function closeBdaySetup(){
+    document.getElementById('bdaySetupModal').classList.remove('show');
+}
+
+function confirmBdayActivate(){
+    const dob = document.getElementById('bdayDobInput').value;
+    if(!dob){ alert('Please enter your date of birth.'); return; }
+    localStorage.setItem(LS.USER_DOB, dob);
+    closeBdaySetup();
+    runBirthdayFill(dob);
+}
+
+// ── Core: Fill 108 contacts ──
+function runBirthdayFill(dob){
+    // Step 1: Get real contacts from DB
+    const realContacts = (JSON.parse(localStorage.getItem('ipn_contacts')||'[]')).slice(0, TOTAL_CONTACTS);
+
+    // Step 2: Generate simulated contacts to fill up to 108
+    const needed = TOTAL_CONTACTS - realContacts.length;
+    const simContacts = [];
+    const dobSeed = new Date(dob).getTime() % 99999;
+
+    for(let i = 0; i < needed; i++){
+        const fn = SIM_FIRST[Math.floor(seededRand(dobSeed, i*3)   * SIM_FIRST.length)];
+        const ln = SIM_LAST [Math.floor(seededRand(dobSeed, i*3+1) * SIM_LAST.length)];
+        const cat = SIM_CATS[Math.floor(seededRand(dobSeed, i*3+2) * SIM_CATS.length)];
+        const pri = Math.floor(seededRand(dobSeed, i*3+3) * 3) + 1; // 1,2,3
+        simContacts.push({ id: `sim_${i}`, name: `${fn} ${ln}`, phone: '9'+String(Math.floor(seededRand(dobSeed,i*7)*1e9)).padStart(9,'0'), cat, pri, isSimulated: true });
+    }
+
+    // Step 3: Combine all 108 contacts
+    const all108 = [...realContacts, ...simContacts];
+
+    // Step 4: For each contact, simulate what priority THEY gave the user back
+    // Weighting: slightly biased toward reciprocal but mostly random
+    // ~28% natural match rate (P1→P1, P2→P2, P3→P3)
+    all108.forEach((c, i) => {
+        const r = seededRand(dobSeed + 777, i * 13); // seeded random for reproducibility
+        // Assign their_pri randomly among 1,2,3
+        if(r < 0.333) c.their_pri = 1;
+        else if(r < 0.667) c.their_pri = 2;
+        else c.their_pri = 3;
+    });
+
+    // Step 5: Compute mutual matches (same priority number)
+    const matches = all108.filter(c => c.pri === c.their_pri);
+
+    // Step 6: Store everything
+    const now = new Date();
+    localStorage.setItem(LS.ACTIVATED_TS, now.toISOString());
+    localStorage.setItem(LS.ACTIVATED_YEAR, `${now.getFullYear()}-${String(new Date(dob).getMonth()+1).padStart(2,'0')}-${String(new Date(dob).getDate()).padStart(2,'0')}`);
+    localStorage.setItem(LS.CONTACTS_108, JSON.stringify(all108));
+    localStorage.setItem(LS.MATCHES, JSON.stringify(matches));
+
+    // Step 7: Show the activation confirmation with matching animation
+    showMatchingProcess(all108, matches);
+    renderBdayButton();
+}
+
+// ── Real-time matching visualization ──
+function showMatchingProcess(all108, finalMatches){
+    document.getElementById('matchingProcessModal').classList.add('show');
+    const grid = document.getElementById('matchingGrid');
+    grid.innerHTML = '';
+
+    // Update header text
+    document.querySelector('.mp-header p').innerHTML =
+        `Simulating how each of your 108 contacts has tagged you back...<br>
+         Match Rule: <strong style="color:var(--ac)">They assigned you the SAME PRIORITY NUMBER as you assigned them</strong>`;
+
+    let matchCount = 0;
+
+    const processNext = (i) => {
+        if(i >= all108.length){
+            finishMatchingDisplay(matchCount, all108.length);
+            return;
+        }
+        const c = all108[i];
+        const isMatch = (c.pri === c.their_pri);
+        if(isMatch) matchCount++;
+
+        document.getElementById('matchingCounter').innerHTML = `
+            <div style="font-size:1.1rem;color:var(--ac);font-weight:700;">
+                Scanning ${i+1} / ${all108.length} &nbsp;·&nbsp;
+                <span style="color:var(--green)">${matchCount} matches found</span>
+            </div>`;
+
+        const card = document.createElement('div');
+        card.style.cssText = `background:${isMatch?'rgba(57,211,83,.1)':'rgba(255,105,0,.04)'};
+            border:1px solid ${isMatch?'rgba(57,211,83,.3)':'rgba(255,105,0,.1)'};
+            border-radius:5px;padding:10px;margin-bottom:7px;font-size:.83rem;
+            animation:slideIn .25s ease-out;`;
+        card.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                    <span style="color:var(--ac);font-weight:700">${c.name}</span>
+                    <span style="font-size:.7rem;color:rgba(255,255,255,.3);margin-left:8px;">${c.isSimulated?'[member]':'[your contact]'}</span><br>
+                    <span style="font-size:.72rem;color:rgba(255,255,255,.5);">
+                        You → P${c.pri} &nbsp;|&nbsp; They → P${c.their_pri} back to you
+                    </span>
+                </div>
+                <div style="font-size:1.6rem;${isMatch?'color:var(--green)':'color:rgba(255,255,255,.15)'}">
+                    ${isMatch ? '✓' : '✗'}
+                </div>
+            </div>`;
+        grid.appendChild(card);
+        grid.scrollTop = grid.scrollHeight;
+
+        setTimeout(() => processNext(i+1), 60);
+    };
+
+    processNext(0);
+}
+
+function finishMatchingDisplay(matchCount, total){
+    const pct = Math.round((matchCount/total)*100);
+    document.getElementById('matchingCounter').innerHTML = `
+        <div style="text-align:center;padding:16px;background:rgba(255,105,0,.07);border-radius:6px;border:1px solid rgba(255,105,0,.2);">
+            <div style="font-size:1.3rem;color:var(--ac);font-weight:700;margin-bottom:6px;">✓ MATCHING COMPLETE</div>
+            <div style="font-size:1.1rem;color:rgba(255,255,255,.8);">
+                <span style="color:var(--green);font-size:1.5rem;">${matchCount}</span> Mutual Priority Matches out of ${total}
+            </div>
+            <div style="font-size:.8rem;color:rgba(255,255,255,.4);margin-top:8px;">${pct}% match rate</div>
+            <div style="margin-top:14px;padding:10px;background:rgba(155,0,255,.08);border:1px solid rgba(155,0,255,.2);border-radius:4px;font-size:.78rem;color:rgba(155,0,255,.9);line-height:1.7;">
+                🔮 Sealed for 24 hours.<br>
+                Return tomorrow to reveal your <strong>Life Priority Matches</strong>.<br>
+                Names will be blurred — hover to reveal each one privately.
+            </div>
+        </div>`;
+    document.getElementById('matchingCompleteBtn').style.display = 'block';
+    document.getElementById('matchingCompleteBtn').textContent = 'UNDERSTOOD — SEAL THE BOOK ✓';
+    document.getElementById('matchingCompleteBtn').onclick = () => {
+        document.getElementById('matchingProcessModal').classList.remove('show');
+        renderBdayButton();
+    };
+}
+
+// ── Year-lock modal ──
+function showYearLock(){
+    const s = getBdayState();
+    const dob = localStorage.getItem(LS.USER_DOB);
+    const activatedDate = new Date(localStorage.getItem(LS.ACTIVATED_TS));
+    const nextBday = dob ? new Date(activatedDate.getFullYear()+1, new Date(dob).getMonth(), new Date(dob).getDate()) : null;
+
+    document.getElementById('ylFromDate').textContent = activatedDate.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    document.getElementById('ylToDate').textContent = nextBday ? nextBday.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+
+    const daysLeft = nextBday ? Math.ceil((nextBday - new Date()) / 86400000) : '—';
+    document.getElementById('ylCountdown').textContent = `${daysLeft} days until next Birthday Gift`;
+
+    document.getElementById('yearlockModal').classList.add('show');
+}
+
+function closeyearlockAndView(){
+    document.getElementById('yearlockModal').classList.remove('show');
+    viewFreshbook();
+}
+
+// ── Sealed modal with live countdown ──
+function showSealedModal(secsRemaining){
+    document.getElementById('sealedModal').classList.add('show');
+    updateSealedTimer(secsRemaining);
+}
+
+function updateSealedTimer(secsLeft){
+    if(!document.getElementById('sealedModal').classList.contains('show')) return;
+    const h = String(Math.floor(secsLeft/3600)).padStart(2,'0');
+    const m = String(Math.floor((secsLeft%3600)/60)).padStart(2,'0');
+    const s = String(secsLeft%60).padStart(2,'0');
+    document.getElementById('sealedTimerDisplay').textContent = `${h}:${m}:${s}`;
+    if(secsLeft > 0) setTimeout(()=>updateSealedTimer(secsLeft-1), 1000);
+}
+
+// ── View FreshBook with blur privacy ──
+function viewFreshbook(){
+    const s = getBdayState();
+    if(s.state === 'SEALED'){
+        showSealedModal(s.secsRemaining);
+        return;
+    }
+
+    const matches = JSON.parse(localStorage.getItem(LS.MATCHES)||'[]');
+    const all108  = JSON.parse(localStorage.getItem(LS.CONTACTS_108)||'[]');
+
+    const matchCount = matches.length;
+    const totalCount = all108.length || 108;
+    const pct = totalCount > 0 ? Math.round((matchCount/totalCount)*100) : 0;
+
+    document.getElementById('fbTotalContacts').textContent = totalCount;
+    document.getElementById('fbMatchCount').textContent = matchCount;
+    document.getElementById('fbMatchPercent').textContent = pct + '%';
+
+    const grid = document.getElementById('fbMatchesGrid');
+    const noMatches = document.getElementById('fbNoMatches');
+
+    if(!matches.length){
+        grid.style.display = 'none';
+        noMatches.style.display = 'block';
+    } else {
+        noMatches.style.display = 'none';
+        grid.style.display = 'grid';
+        grid.innerHTML = matches.map((m, idx) => {
+            const priBadge = `<span class="fb-priority-badge fb-p${m.pri}">PRIORITY ${m.pri}</span>`;
+            const srcLabel = m.isSimulated ? 'IPNOTEC MEMBER' : 'YOUR CONTACT';
+            return `
+            <div class="fb-match-card" style="cursor:default;">
+                <div class="fb-contact-name fb-name-blur" 
+                     onclick="this.classList.toggle('revealed')"
+                     title="Tap to reveal">${m.name}</div>
+                <div class="fb-blur-hint">↑ TAP TO REVEAL</div>
+                <div style="margin:6px 0;">
+                    ${priBadge}
+                    <span class="fb-emotion-tag">${m.cat||'—'}</span>
+                </div>
+                <div class="fb-match-badge">✓ MUTUAL P${m.pri} MATCH</div>
+                <div class="fb-match-source">${srcLabel} · They also placed you at Priority ${m.their_pri}</div>
+            </div>`;
+        }).join('');
+    }
+
+    document.getElementById('freshbookModal').classList.add('show');
+}
+
+// ── Export ──
+function exportFreshbook(format){
+    const matches = JSON.parse(localStorage.getItem(LS.MATCHES)||'[]');
+    if(!matches.length){ alert('No matches to export.'); return; }
+    if(format==='csv'){
+        let csv = 'Name,Phone,Your Priority,Their Priority,Category,Source\n';
+        matches.forEach(m=>{
+            csv += `"${m.name}","${m.phone||''}","P${m.pri}","P${m.their_pri}","${m.cat||''}","${m.isSimulated?'Member':'Your Contact'}"\n`;
+        });
+        downloadFile(csv,'life-priority-matches.csv','text/csv');
+    } else {
+        downloadFile(JSON.stringify(matches,null,2),'life-priority-matches.json','application/json');
+    }
+}
+
+function downloadFile(content,filename,type){
+    const blob=new Blob([content],{type});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download=filename; a.click();
+    URL.revokeObjectURL(url);
+}
+
+function closeFreshbook(){ document.getElementById('freshbookModal').classList.remove('show'); }
+function closeBirthdayChoice(){ document.getElementById('birthdayChoiceModal').classList.remove('show'); }
+function closeMatchingModal(){ document.getElementById('matchingProcessModal').classList.remove('show'); renderBdayButton(); }
+function cancelContactAssign(){ document.getElementById('contactAssignModal').classList.remove('show'); }
+function proceedToFreshbook(){ closeMatchingModal(); setTimeout(viewFreshbook, 300); }
+
+// ── DEMO RESET ──
+function resetBirthdayDemo(){
+    if(!confirm('DEMO RESET: Clear all birthday data and start fresh?')) return;
+    localStorage.removeItem(LS.ACTIVATED_TS);
+    localStorage.removeItem(LS.ACTIVATED_YEAR);
+    localStorage.removeItem(LS.CONTACTS_108);
+    localStorage.removeItem(LS.MATCHES);
+    localStorage.removeItem(LS.USER_DOB);
+    renderBdayButton();
+}
+
+// ── Backward compat stubs ──
+function updateBirthdayBar(){ renderBdayButton(); }
+function isBirthdayToday(){ return false; }
+function calculateDaysToBirthday(){ return null; }
+function initializeGlobalDatabase(){ /* no longer needed — sim done at fill time */ }
+
+// ── Init ──
+renderBdayButton();
+setInterval(renderBdayButton, 60000); // refresh button label every minute
+</script>
+
 <script>
 // ══════════════════════════════════════════
 //  DATA LAYER — localStorage persistence
@@ -1263,6 +2412,7 @@ function filterContacts(f,btn){
 }
 
 function renderContacts(){
+    updateBirthdayBar(); // Check and update birthday status
     let contacts=[...DB.contacts];
     if(abFilter==='1') contacts=contacts.filter(c=>c.pri===1);
     else if(abFilter==='2') contacts=contacts.filter(c=>c.pri===2);
